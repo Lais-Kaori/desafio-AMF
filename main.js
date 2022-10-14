@@ -1,8 +1,26 @@
 const url = "https://api.estagio.amfernandes.com.br/imoveis";
 
-var mainList = [];
+function start(){
+  renderButtons();
+  listBuildings();
+  selectSABuildings();
+  selectSBBuildings();
+  selectSCBuildings();
+  // orderNameAtoZ(mainList);
+  // orderNameZToA(mainList);
+  // orderPriceMaxToMin(mainList);
+  // orderDistrictAToZ(mainList);
+  showOnScreen(mainList);
+  
+}
 
-function listBuildings() {
+var mainList = [];
+var selectedSAList = [];
+var selectedSBList = [];
+var selectedSCList = [];
+
+
+function listBuildings(){
   axios
     .get(url)
     .then((response) => {
@@ -36,187 +54,201 @@ function listBuildings() {
     .catch((error) => console.error(error));
 }
 
-var orderedPrice = [];
-
-function orderPriceMaxToMin() {
+function selectSABuildings(){
   axios
     .get(url)
     .then((response) => {
       for (var i = 0; i < response.data.length; i++) {
         var currentItem = response.data[i];
-        if (currentItem.planta != null) {
-          var objList = {
-            Nome: currentItem.nome,
-            Cidade: currentItem.cidade,
-            Bairro: currentItem.bairro,
-            Metragem: currentItem.planta.metragem,
-            Preço: currentItem.planta.preco,
-            Dormitórios: currentItem.planta.dorms,
-            Vagas: currentItem.planta.vagas,
-          };
-        } else {
-          var objList = {
-            Nome: currentItem.nome,
-            Cidade: currentItem.cidade,
-            Bairro: currentItem.bairro,
-            Metragem: null,
-            Preço: null,
-            Dormitórios: null,
-            Vagas: null,
-          };
+        if (currentItem.cidade === "Santo André") {
+          if (currentItem.planta != null) {
+            var obj = {
+              Nome: currentItem.nome,
+              Cidade: currentItem.cidade,
+              Bairro: currentItem.bairro,
+              Metragem: currentItem.planta.metragem,
+              Preço: currentItem.planta.preco,
+              Dormitórios: currentItem.planta.dorms,
+              Vagas: currentItem.planta.vagas,
+            };
+          } else {
+            var obj = {
+              Nome: currentItem.nome,
+              Cidade: currentItem.cidade,
+              Bairro: currentItem.bairro,
+              Metragem: null,
+              Preço: null,
+              Dormitórios: null,
+              Vagas: null,
+            };
+          }
+          selectedSAList.push(obj);
         }
-        orderedPrice.push(objList);
       }
-      orderedPrice.sort((a, b) => b.Preço - a.Preço);
-      return orderedPrice;
+      console.log(selectedSAList);
+      return selectedSAList;
     })
     .catch((error) => console.error(error));
-
-  // orderedPrice = mainList;
-  // orderedPrice.sort((a, b) => b.Preço - a.Preço);
-  // console.log(orderedPrice);
-  // return orderedPrice;
 }
 
-var orderedName = [];
-
-function orderNameAtoZ() {
+function selectSBBuildings(){
   axios
     .get(url)
     .then((response) => {
       for (var i = 0; i < response.data.length; i++) {
         var currentItem = response.data[i];
-        if (currentItem.planta != null) {
-          var objList = {
-            Nome: currentItem.nome,
-            Cidade: currentItem.cidade,
-            Bairro: currentItem.bairro,
-            Metragem: currentItem.planta.metragem,
-            Preço: currentItem.planta.preco,
-            Dormitórios: currentItem.planta.dorms,
-            Vagas: currentItem.planta.vagas,
-          };
-        } else {
-          var objList = {
-            Nome: currentItem.nome,
-            Cidade: currentItem.cidade,
-            Bairro: currentItem.bairro,
-            Metragem: null,
-            Preço: null,
-            Dormitórios: null,
-            Vagas: null,
-          };
+        if (currentItem.cidade === "São Bernardo do Campo") {
+          if (currentItem.planta != null) {
+            var obj = {
+              Nome: currentItem.nome,
+              Cidade: currentItem.cidade,
+              Bairro: currentItem.bairro,
+              Metragem: currentItem.planta.metragem,
+              Preço: currentItem.planta.preco,
+              Dormitórios: currentItem.planta.dorms,
+              Vagas: currentItem.planta.vagas,
+            };
+          } else {
+            var obj = {
+              Nome: currentItem.nome,
+              Cidade: currentItem.cidade,
+              Bairro: currentItem.bairro,
+              Metragem: null,
+              Preço: null,
+              Dormitórios: null,
+              Vagas: null,
+            };
+          }
+          selectedSBList.push(obj);
         }
-        orderedName.push(objList);
       }
-      orderedName.sort(function (x, y) {
-          let a = x.Nome.toUpperCase();
-          b = y.Nome.toUpperCase();
-          return a > b ? 1 : a == b ? 0 : -1;
-        });
-      return orderedName;
+      console.log(selectedSBList);
+      return selectedSBList;
     })
     .catch((error) => console.error(error));
-
-  // orderedName = mainList.sort(function (x, y) {
-  //   let a = x.Nome.toUpperCase();
-  //   b = y.Nome.toUpperCase();
-  //   return a > b ? 1 : a == b ? 0 : -1;
-  // });
-  // console.log(orderedName);
-  // return orderedName;
 }
 
-var orderedCity = [];
-
-function orderCityAToZ(){
+function selectSCBuildings(){
   axios
     .get(url)
     .then((response) => {
       for (var i = 0; i < response.data.length; i++) {
         var currentItem = response.data[i];
-        if (currentItem.planta != null) {
-          var objList = {
-            Nome: currentItem.nome,
-            Cidade: currentItem.cidade,
-            Bairro: currentItem.bairro,
-            Metragem: currentItem.planta.metragem,
-            Preço: currentItem.planta.preco,
-            Dormitórios: currentItem.planta.dorms,
-            Vagas: currentItem.planta.vagas,
-          };
-        } else {
-          var objList = {
-            Nome: currentItem.nome,
-            Cidade: currentItem.cidade,
-            Bairro: currentItem.bairro,
-            Metragem: null,
-            Preço: null,
-            Dormitórios: null,
-            Vagas: null,
-          };
+        if (currentItem.cidade === "São Caetano do Sul") {
+          if (currentItem.planta != null) {
+            var obj = {
+              Nome: currentItem.nome,
+              Cidade: currentItem.cidade,
+              Bairro: currentItem.bairro,
+              Metragem: currentItem.planta.metragem,
+              Preço: currentItem.planta.preco,
+              Dormitórios: currentItem.planta.dorms,
+              Vagas: currentItem.planta.vagas,
+            };
+          } else {
+            var obj = {
+              Nome: currentItem.nome,
+              Cidade: currentItem.cidade,
+              Bairro: currentItem.bairro,
+              Metragem: null,
+              Preço: null,
+              Dormitórios: null,
+              Vagas: null,
+            };
+          }
+          selectedSCList.push(obj);
         }
-        orderedCity.push(objList);
       }
-      orderedCity.sort(function (x, y) {
-          let a = x.Cidade.toUpperCase();
-          b = y.Cidade.toUpperCase();
-          return a > b ? 1 : a == b ? 0 : -1;
-        });
-        console.log(orderedCity);
-      return orderedCity;
+      console.log(selectedSCList);
+      return selectedSCList;
     })
     .catch((error) => console.error(error));
 }
 
-var orderedDistrict = [];
-
-function orderDistrictAToZ(){
+function orderPriceMaxToMin(element){
   axios
-  .get(url)
-  .then((response) => {
-    for (var i = 0; i < response.data.length; i++) {
-      var currentItem = response.data[i];
-      if (currentItem.planta != null) {
-        var objList = {
-          Nome: currentItem.nome,
-          Cidade: currentItem.cidade,
-          Bairro: currentItem.bairro,
-          Metragem: currentItem.planta.metragem,
-          Preço: currentItem.planta.preco,
-          Dormitórios: currentItem.planta.dorms,
-          Vagas: currentItem.planta.vagas,
-        };
-      } else {
-        var objList = {
-          Nome: currentItem.nome,
-          Cidade: currentItem.cidade,
-          Bairro: currentItem.bairro,
-          Metragem: null,
-          Preço: null,
-          Dormitórios: null,
-          Vagas: null,
-        };
-      }
-      orderedDistrict.push(objList);
-    }
-    orderedDistrict.sort(function (x, y) {
+    .get(element)
+    .then(
+      (response) => {
+        return element.sort((a, b) => b.Preço - a.Preço);
+      })
+    .catch((error) => console.error(error));
+  }
+
+function orderPriceMinToMax (element){
+  axios
+    .get(element)
+    .then(
+      (response) => {
+        return element.sort((a, b) => a.Preço - b.Preço);
+      })
+    .catch((error) => console.error(error));
+}
+
+function orderNameAtoZ(element){
+  axios
+    .get(element)
+    .then((response) => {
+      element.sort(function (x, y) {
+        let a = x.Nome.toUpperCase();
+        b = y.Nome.toUpperCase();
+        return a > b ? 1 : a == b ? 0 : -1;
+      });
+      return element;
+    })
+    .catch((error) => console.error(error));
+}
+
+function orderNameZToA(element){
+  axios
+    .get(element)
+    .then((response) => {
+      element.sort(function (x, y) {
+        let a = x.Nome.toUpperCase();
+        b = y.Nome.toUpperCase();
+        return a < b ? 1 : a == b ? 0 : -1;
+      });
+      return element;
+    })
+    .catch((error) => console.error(error));
+  }
+
+function orderDistrictAToZ(element){
+  axios
+    .get(element)
+    .then((response) => {
+      element.sort(function (x, y) {
         let a = x.Bairro.toUpperCase();
         b = y.Bairro.toUpperCase();
         return a > b ? 1 : a == b ? 0 : -1;
       });
-      console.log(orderedDistrict);
-    return orderedDistrict;
-  })
-  .catch((error) => console.error(error));
+      return element;
+    })
+    .catch((error) => console.error(error));
 }
 
-function showOnScreen(element) {
+function orderDistrictZToA(element){
+  axios
+    .get(element)
+    .then((response) => {
+      element.sort(function (x, y) {
+        let a = x.Bairro.toUpperCase();
+        b = y.Bairro.toUpperCase();
+        return a < b ? 1 : a == b ? 0 : -1;
+      });
+      return element;
+    })
+    .catch((error) => console.error(error));
+}
+
+function showOnScreen(element){
   axios
     .get(url)
     .then((response) => {
       var divScreen = document.querySelector("#show");
+      divScreen.innerHTML = "";
       var showInfo = document.createElement("p");
+      showInfo.classList.add("info")
       for (var i = 0; i < response.data.length; i++) {
         var showParagraph = document.createElement("li");
         showParagraph.innerHTML = `
@@ -235,9 +267,48 @@ function showOnScreen(element) {
     .catch((error) => console.error(error));
 }
 
-listBuildings();
-orderNameAtoZ();
-orderPriceMaxToMin();
-orderCityAToZ();
-orderDistrictAToZ();
-showOnScreen(orderedDistrict);
+function renderButtons(){
+  var divButtons = document.querySelector(".buttons");
+  divButtons.innerHTML = "";
+
+  var buttonTodos = createTodosButton();
+  var buttonSantoAndre = createSAButton();
+  var buttonSaoBernardo = createSBButton();
+  var buttonSaoCaetano = createSCButton();
+
+  divButtons.appendChild(buttonTodos);
+  divButtons.appendChild(buttonSantoAndre);
+  divButtons.appendChild(buttonSaoBernardo);
+  divButtons.appendChild(buttonSaoCaetano);
+
+}
+
+function createTodosButton(){
+  var button = document.createElement("button");
+  button.textContent = "Todos";
+  button.addEventListener("click", function(){showOnScreen(mainList)});
+  return button;
+}
+
+function createSAButton(){
+  var button = document.createElement("button");
+  button.textContent = "Santo André";
+  button.addEventListener("click", function(){showOnScreen(selectedSAList)});
+  return button;
+}
+
+function createSBButton(){
+  var button = document.createElement("button");
+  button.textContent = "São Bernardo";
+  button.addEventListener("click", function(){showOnScreen(selectedSBList)});
+  return button;
+}
+
+function createSCButton(){
+  var button = document.createElement("button");
+  button.textContent = "São Caetano";
+  button.addEventListener("click", function(){showOnScreen(selectedSCList)});
+  return button;
+}
+
+start()
