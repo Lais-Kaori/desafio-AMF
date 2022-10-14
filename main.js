@@ -1,29 +1,13 @@
 const url = "https://api.estagio.amfernandes.com.br/imoveis";
 
-function getApi() {
-  axios
-    .get(url)
-    .then((response) => {
-      apiResult.textContent = JSON.stringify(response.data);
-
-      console.log(response.data);
-    })
-    .catch((error) => console.error(error));
-}
-
 var mainList = [];
 
-function renderBuildings() {
+function listBuildings() {
   axios
     .get(url)
     .then((response) => {
-      var divBuildings = document.querySelector("#allBuildings");
-      divBuildings.innerHTML = "";
-      var buildingInfo = document.createElement("p");
       for (var i = 0; i < response.data.length; i++) {
         var currentItem = response.data[i];
-        var paragraph = document.createElement("li");
-
         if (currentItem.planta != null) {
           var obj = {
             Nome: currentItem.nome,
@@ -46,40 +30,15 @@ function renderBuildings() {
           };
         }
         mainList.push(obj);
-        paragraph.innerHTML = `
-                Nome: ${obj.Nome}<br>
-                Cidade: ${obj.Cidade}<br>
-                Bairro: ${obj.Bairro}<br>
-                Metragem: ${obj.Metragem}<br>
-                Preço: ${obj.Preço}<br>
-                Dormitórios: ${obj.Dormitórios}<br>
-                Vagas: ${obj.Vagas}<br>
-                <br>`;
-        divBuildings.appendChild(buildingInfo);
-        buildingInfo.appendChild(paragraph);
       }
-      console.log(mainList);
+      return mainList;
     })
     .catch((error) => console.error(error));
 }
 
-function sortDistrict() {
-  axios
-    .get(url)
-    .then((response) => {
-      let district = [];
-      response.data.forEach((element) => {
-        district.push(element.bairro);
-      });
-      console.log(district);
-    })
-    .catch((error) => console.error(error));
-}
+var orderedPrice = [];
 
-var orderedList = [];
-console.log(orderedList);
-
-function sortPriceDesc() {
+function orderPriceMaxToMin() {
   axios
     .get(url)
     .then((response) => {
@@ -106,13 +65,150 @@ function sortPriceDesc() {
             Vagas: null,
           };
         }
-        orderedList.push(objList);
+        orderedPrice.push(objList);
       }
-      console.log(orderedList);
-      orderedList.sort((a, b) => b.Preço - a.Preço);
-      return orderedList;
+      orderedPrice.sort((a, b) => b.Preço - a.Preço);
+      return orderedPrice;
     })
     .catch((error) => console.error(error));
+
+  // orderedPrice = mainList;
+  // orderedPrice.sort((a, b) => b.Preço - a.Preço);
+  // console.log(orderedPrice);
+  // return orderedPrice;
+}
+
+var orderedName = [];
+
+function orderNameAtoZ() {
+  axios
+    .get(url)
+    .then((response) => {
+      for (var i = 0; i < response.data.length; i++) {
+        var currentItem = response.data[i];
+        if (currentItem.planta != null) {
+          var objList = {
+            Nome: currentItem.nome,
+            Cidade: currentItem.cidade,
+            Bairro: currentItem.bairro,
+            Metragem: currentItem.planta.metragem,
+            Preço: currentItem.planta.preco,
+            Dormitórios: currentItem.planta.dorms,
+            Vagas: currentItem.planta.vagas,
+          };
+        } else {
+          var objList = {
+            Nome: currentItem.nome,
+            Cidade: currentItem.cidade,
+            Bairro: currentItem.bairro,
+            Metragem: null,
+            Preço: null,
+            Dormitórios: null,
+            Vagas: null,
+          };
+        }
+        orderedName.push(objList);
+      }
+      orderedName.sort(function (x, y) {
+          let a = x.Nome.toUpperCase();
+          b = y.Nome.toUpperCase();
+          return a > b ? 1 : a == b ? 0 : -1;
+        });
+      return orderedName;
+    })
+    .catch((error) => console.error(error));
+
+  // orderedName = mainList.sort(function (x, y) {
+  //   let a = x.Nome.toUpperCase();
+  //   b = y.Nome.toUpperCase();
+  //   return a > b ? 1 : a == b ? 0 : -1;
+  // });
+  // console.log(orderedName);
+  // return orderedName;
+}
+
+var orderedCity = [];
+
+function orderCityAToZ(){
+  axios
+    .get(url)
+    .then((response) => {
+      for (var i = 0; i < response.data.length; i++) {
+        var currentItem = response.data[i];
+        if (currentItem.planta != null) {
+          var objList = {
+            Nome: currentItem.nome,
+            Cidade: currentItem.cidade,
+            Bairro: currentItem.bairro,
+            Metragem: currentItem.planta.metragem,
+            Preço: currentItem.planta.preco,
+            Dormitórios: currentItem.planta.dorms,
+            Vagas: currentItem.planta.vagas,
+          };
+        } else {
+          var objList = {
+            Nome: currentItem.nome,
+            Cidade: currentItem.cidade,
+            Bairro: currentItem.bairro,
+            Metragem: null,
+            Preço: null,
+            Dormitórios: null,
+            Vagas: null,
+          };
+        }
+        orderedCity.push(objList);
+      }
+      orderedCity.sort(function (x, y) {
+          let a = x.Cidade.toUpperCase();
+          b = y.Cidade.toUpperCase();
+          return a > b ? 1 : a == b ? 0 : -1;
+        });
+        console.log(orderedCity);
+      return orderedCity;
+    })
+    .catch((error) => console.error(error));
+}
+
+var orderedDistrict = [];
+
+function orderDistrictAToZ(){
+  axios
+  .get(url)
+  .then((response) => {
+    for (var i = 0; i < response.data.length; i++) {
+      var currentItem = response.data[i];
+      if (currentItem.planta != null) {
+        var objList = {
+          Nome: currentItem.nome,
+          Cidade: currentItem.cidade,
+          Bairro: currentItem.bairro,
+          Metragem: currentItem.planta.metragem,
+          Preço: currentItem.planta.preco,
+          Dormitórios: currentItem.planta.dorms,
+          Vagas: currentItem.planta.vagas,
+        };
+      } else {
+        var objList = {
+          Nome: currentItem.nome,
+          Cidade: currentItem.cidade,
+          Bairro: currentItem.bairro,
+          Metragem: null,
+          Preço: null,
+          Dormitórios: null,
+          Vagas: null,
+        };
+      }
+      orderedDistrict.push(objList);
+    }
+    orderedDistrict.sort(function (x, y) {
+        let a = x.Bairro.toUpperCase();
+        b = y.Bairro.toUpperCase();
+        return a > b ? 1 : a == b ? 0 : -1;
+      });
+      console.log(orderedDistrict);
+    return orderedDistrict;
+  })
+  .catch((error) => console.error(error));
 }
 
 function showOnScreen(element) {
@@ -139,8 +235,9 @@ function showOnScreen(element) {
     .catch((error) => console.error(error));
 }
 
-// getApi();
-// renderBuildings();
-// sortDistrict();
-sortPriceDesc();
-showOnScreen(orderedList);
+listBuildings();
+orderNameAtoZ();
+orderPriceMaxToMin();
+orderCityAToZ();
+orderDistrictAToZ();
+showOnScreen(orderedDistrict);
