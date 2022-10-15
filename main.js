@@ -11,14 +11,14 @@ function start(){
   // orderPriceMaxToMin(mainList);
   // orderDistrictAToZ(mainList);
   showOnScreen(mainList);
-  
+  // dropdownClick();
 }
 
 var mainList = [];
 var selectedSAList = [];
 var selectedSBList = [];
 var selectedSCList = [];
-
+var list = [];
 
 function listBuildings(){
   axios
@@ -85,7 +85,7 @@ function selectSABuildings(){
           selectedSAList.push(obj);
         }
       }
-      console.log(selectedSAList);
+      // console.log(selectedSAList);
       return selectedSAList;
     })
     .catch((error) => console.error(error));
@@ -122,7 +122,7 @@ function selectSBBuildings(){
           selectedSBList.push(obj);
         }
       }
-      console.log(selectedSBList);
+      // console.log(selectedSBList);
       return selectedSBList;
     })
     .catch((error) => console.error(error));
@@ -159,84 +159,86 @@ function selectSCBuildings(){
           selectedSCList.push(obj);
         }
       }
-      console.log(selectedSCList);
+      // console.log(selectedSCList);
       return selectedSCList;
     })
     .catch((error) => console.error(error));
 }
 
-function orderPriceMaxToMin(element){
+function orderPriceMaxToMin(){
   axios
-    .get(element)
+    .get(url)
     .then(
       (response) => {
-        return element.sort((a, b) => b.Preço - a.Preço);
+        list.sort((a, b) => b.Preço - a.Preço);
+        showOnScreen(list);
       })
     .catch((error) => console.error(error));
   }
 
-function orderPriceMinToMax (element){
+function orderPriceMinToMax(){
   axios
-    .get(element)
+    .get(url)
     .then(
       (response) => {
-        return element.sort((a, b) => a.Preço - b.Preço);
+        list.sort((a, b) => a.Preço - b.Preço);
+        showOnScreen(list);
       })
     .catch((error) => console.error(error));
 }
 
-function orderNameAtoZ(element){
+function orderNameAToZ(){
   axios
-    .get(element)
+    .get(url)
     .then((response) => {
-      element.sort(function (x, y) {
+      list.sort(function (x, y) {
         let a = x.Nome.toUpperCase();
         b = y.Nome.toUpperCase();
         return a > b ? 1 : a == b ? 0 : -1;
       });
-      return element;
+      showOnScreen(list);
     })
     .catch((error) => console.error(error));
 }
 
-function orderNameZToA(element){
+function orderNameZToA(){
   axios
-    .get(element)
+    .get(url)
     .then((response) => {
-      element.sort(function (x, y) {
+      list.sort(function (x, y) {
         let a = x.Nome.toUpperCase();
         b = y.Nome.toUpperCase();
         return a < b ? 1 : a == b ? 0 : -1;
       });
-      return element;
+      showOnScreen(list);
     })
     .catch((error) => console.error(error));
   }
 
-function orderDistrictAToZ(element){
+function orderDistrictAToZ(){
   axios
-    .get(element)
+    .get(url)
     .then((response) => {
-      element.sort(function (x, y) {
+      list.sort(function (x, y) {
         let a = x.Bairro.toUpperCase();
         b = y.Bairro.toUpperCase();
         return a > b ? 1 : a == b ? 0 : -1;
       });
-      return element;
+      showOnScreen(list);
     })
     .catch((error) => console.error(error));
 }
 
-function orderDistrictZToA(element){
+function orderDistrictZToA(){
   axios
-    .get(element)
+    .get(url)
     .then((response) => {
-      element.sort(function (x, y) {
+      list.sort(function (x, y) {
         let a = x.Bairro.toUpperCase();
         b = y.Bairro.toUpperCase();
         return a < b ? 1 : a == b ? 0 : -1;
       });
-      return element;
+      showOnScreen(list);
     })
     .catch((error) => console.error(error));
 }
@@ -248,7 +250,7 @@ function showOnScreen(element){
       var divScreen = document.querySelector("#show");
       divScreen.innerHTML = "";
       var showInfo = document.createElement("p");
-      showInfo.classList.add("info")
+      showInfo.classList.add("info");
       for (var i = 0; i < response.data.length; i++) {
         var showParagraph = document.createElement("li");
         showParagraph.innerHTML = `
@@ -287,6 +289,8 @@ function createTodosButton(){
   var button = document.createElement("button");
   button.textContent = "Todos";
   button.addEventListener("click", function(){showOnScreen(mainList)});
+  button.addEventListener("click", list = mainList);
+  console.log(list);
   return button;
 }
 
@@ -294,6 +298,8 @@ function createSAButton(){
   var button = document.createElement("button");
   button.textContent = "Santo André";
   button.addEventListener("click", function(){showOnScreen(selectedSAList)});
+  button.addEventListener("click", function(){list = selectedSAList});
+  console.log(list);
   return button;
 }
 
@@ -301,6 +307,8 @@ function createSBButton(){
   var button = document.createElement("button");
   button.textContent = "São Bernardo";
   button.addEventListener("click", function(){showOnScreen(selectedSBList)});
+  button.addEventListener("click", function(){list = selectedSBList});
+  console.log(list);
   return button;
 }
 
@@ -308,7 +316,38 @@ function createSCButton(){
   var button = document.createElement("button");
   button.textContent = "São Caetano";
   button.addEventListener("click", function(){showOnScreen(selectedSCList)});
+  button.addEventListener("click", function(){list = selectedSCList});
+  console.log(list);
   return button;
 }
+
+// function define(element){
+//   list = element;
+// }
+
+// function sort(element) {
+//   orderPriceMaxToMin(element);
+//   showOnScreen(element);
+// }
+
+function dropdownClick (){
+  document.querySelector("#price-max").addEventListener("click", function(){console.log(list)});
+}
+
+
+const selected = document.querySelector(".selected");
+const optionsContainer = document.querySelector(".options-container");
+const optionsList = document.querySelectorAll(".option");
+
+selected.addEventListener("click", () => {
+  optionsContainer.classList.toggle("active");
+})
+
+optionsList.forEach( o =>{
+  o.addEventListener("click", () => {
+    selected.innerHTML = o.querySelector("label").innerHTML;
+    optionsContainer.classList.remove("active");
+  });
+});
 
 start()

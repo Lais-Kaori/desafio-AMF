@@ -19,61 +19,76 @@
 
       <div class="container">
         <h3>Ordenar por:</h3>
-        <div class="selected">Selecione</div>
+        
         <div class="select-box">
-          <div class="options-container">
-            <div class="option">
-              <input
-                type="radio"
-                class="radio"
-                id="price-max"
-                name="category"
-              />
-              <label for="price-max">Preço: Maior - Menor</label>
+            <div class="options-container">
+                <div class="option" onclick="orderPriceMaxToMin()">
+                <input
+                    type="radio"
+                    class="radio"
+                    id="price-max"
+                    name="category"
+                />
+                <label for="price-max">Preço: Maior - Menor</label>
+                </div>
+
+                <div class="option" onclick="orderPriceMinToMax()">
+                <input
+                    type="radio"
+                    class="radio"
+                    id="price-min"
+                    name="category" 
+                />
+                <label for="price-min">Preço: Menor - Maior</label>
+                </div>
+
+                <div class="option" onclick="orderNameAToZ()">
+                <input 
+                    type="radio" 
+                    class="radio" 
+                    id="name-A" 
+                    name="category" 
+                />
+                <label for="name-A">Nome: A - Z</label>
+                </div>
+
+                <div class="option" onclick="orderNameZToA()">
+                <input 
+                    type="radio" 
+                    class="radio" 
+                    id="name-Z" 
+                    name="category"
+                />
+                <label for="name-Z">Nome: Z - A</label>
+                </div>
+
+                <div class="option" onclick="orderDistrictAToZ()">
+                <input
+                    type="radio"
+                    class="radio"
+                    id="district-Z"
+                    name="category"
+                />
+                <label for="district-A">Bairro: A - Z</label>
+                </div>
+
+                <div class="option" onclick="orderDistrictZToA()">
+                <input
+                    type="radio"
+                    class="radio"
+                    id="district-Z"
+                    name="category"
+                />
+                <label for="district-A">Bairro: Z - A</label>
+                </div>
             </div>
 
-            <div class="option">
-              <input
-                type="radio"
-                class="radio"
-                id="price-min"
-                name="category"
-              />
-              <label for="price-min">Preço: Menor -Maior</label>
+            <div class="selected">
+                Selecione
             </div>
 
-            <div class="option">
-              <input type="radio" class="radio" id="name-A" name="category" />
-              <label for="name-A">Nome: A - Z</label>
-            </div>
-
-            <div class="option">
-              <input type="radio" class="radio" id="name-Z" name="category" />
-              <label for="name-Z">Nome: Z - A</label>
-            </div>
-
-            <div class="option">
-              <input
-                type="radio"
-                class="radio"
-                id="district-Z"
-                name="category"
-              />
-              <label for="district-A">Bairro: A - Z</label>
-            </div>
-
-            <div class="option">
-              <input
-                type="radio"
-                class="radio"
-                id="district-Z"
-                name="category"
-              />
-              <label for="district-A">Bairro: Z - A</label>
-            </div>
-          </div>
         </div>
-      </div>
+        </div>
     </div>
 
     <div class="allBuildings">
