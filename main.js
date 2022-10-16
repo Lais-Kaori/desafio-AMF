@@ -3,15 +3,9 @@ const url = "https://api.estagio.amfernandes.com.br/imoveis";
 function start() {
   renderButtons();
   listBuildings();
-  selectSABuildings();
-  selectSBBuildings();
-  selectSCBuildings();
 }
 
 var mainList = [];
-var selectedSAList = [];
-var selectedSBList = [];
-var selectedSCList = [];
 var currentList = mainList;
 
 function listBuildings() {
@@ -47,120 +41,6 @@ function listBuildings() {
       }
       showOnScreen(mainList);
       return mainList;
-    })
-    .catch((error) => console.error(error));
-}
-
-function selectSABuildings() {
-  axios
-    .get(url)
-    .then((response) => {
-      for (var i = 0; i < response.data.length; i++) {
-        let currentItem = response.data[i];
-        if (currentItem.cidade === "Santo André") {
-          if (currentItem.planta != null) {
-            var obj = {
-              Nome: currentItem.nome,
-              Cidade: currentItem.cidade,
-              Bairro: currentItem.bairro,
-              Metragem: currentItem.planta.metragem,
-              Preço: currentItem.planta.preco,
-              Dormitórios: currentItem.planta.dorms,
-              Vagas: currentItem.planta.vagas,
-              Imagem: currentItem.fachada,
-            };
-          } else {
-            var obj = {
-              Nome: currentItem.nome,
-              Cidade: currentItem.cidade,
-              Bairro: currentItem.bairro,
-              Metragem: null,
-              Preço: null,
-              Dormitórios: null,
-              Vagas: null,
-              Imagem: currentItem.fachada,
-            };
-          }
-          selectedSAList.push(obj);
-        }
-      }
-      return selectedSAList;
-    })
-    .catch((error) => console.error(error));
-}
-
-function selectSBBuildings() {
-  axios
-    .get(url)
-    .then((response) => {
-      for (var i = 0; i < response.data.length; i++) {
-        let currentItem = response.data[i];
-        if (currentItem.cidade === "São Bernardo do Campo") {
-          if (currentItem.planta != null) {
-            var obj = {
-              Nome: currentItem.nome,
-              Cidade: currentItem.cidade,
-              Bairro: currentItem.bairro,
-              Metragem: currentItem.planta.metragem,
-              Preço: currentItem.planta.preco,
-              Dormitórios: currentItem.planta.dorms,
-              Vagas: currentItem.planta.vagas,
-              Imagem: currentItem.fachada,
-            };
-          } else {
-            var obj = {
-              Nome: currentItem.nome,
-              Cidade: currentItem.cidade,
-              Bairro: currentItem.bairro,
-              Metragem: null,
-              Preço: null,
-              Dormitórios: null,
-              Vagas: null,
-              Imagem: currentItem.fachada,
-            };
-          }
-          selectedSBList.push(obj);
-        }
-      }
-      return selectedSBList;
-    })
-    .catch((error) => console.error(error));
-}
-
-function selectSCBuildings() {
-  axios
-    .get(url)
-    .then((response) => {
-      for (var i = 0; i < response.data.length; i++) {
-        let currentItem = response.data[i];
-        if (currentItem.cidade === "São Caetano do Sul") {
-          if (currentItem.planta != null) {
-            var obj = {
-              Nome: currentItem.nome,
-              Cidade: currentItem.cidade,
-              Bairro: currentItem.bairro,
-              Metragem: currentItem.planta.metragem,
-              Preço: currentItem.planta.preco,
-              Dormitórios: currentItem.planta.dorms,
-              Vagas: currentItem.planta.vagas,
-              Imagem: currentItem.fachada,
-            };
-          } else {
-            var obj = {
-              Nome: currentItem.nome,
-              Cidade: currentItem.cidade,
-              Bairro: currentItem.bairro,
-              Metragem: null,
-              Preço: null,
-              Dormitórios: null,
-              Vagas: null,
-              Imagem: currentItem.fachada,
-            };
-          }
-          selectedSCList.push(obj);
-        }
-      }
-      return selectedSCList;
     })
     .catch((error) => console.error(error));
 }
@@ -221,8 +101,8 @@ const showOnScreen = (element) => {
     <p class="text"><b>Nome: </b> ${element.Nome}</br>
     <b>Cidade: </b> ${element.Cidade}</br>
     <b>Bairro: </b> ${element.Bairro}</br>
-    <b>Metragem: </b> ${element.Metragem}</br>
-    <b>Preço: </b> ${element.Preço}</br>
+    <b>Tamanho: </b> ${element.Metragem} m&#178</br>
+    <b>Preço: </b> R$${element.Preço}</br>
     <b>Dormitórios: </b> ${element.Dormitórios}</br>
     <b>Vagas: </b> ${element.Vagas}</br>
     </p>
@@ -253,10 +133,8 @@ function createAllButton() {
   let button = document.createElement("button");
   button.textContent = "Todos";
   button.addEventListener("click", function () {
-    showOnScreen(mainList);
-  });
-  button.addEventListener("click", function () {
     currentList = mainList;
+    showOnScreen(mainList);
   });
   return button;
 }
@@ -265,69 +143,67 @@ function createSAButton() {
   let button = document.createElement("button");
   button.textContent = "Santo André";
   button.addEventListener("click", function () {
-    showOnScreen(selectedSAList);
-  });
-  button.addEventListener("click", function () {
+    const selectedSAList = mainList.filter((item) => {
+      return item.Cidade === "Santo André";
+    });
     currentList = selectedSAList;
+    showOnScreen(selectedSAList);
   });
   return button;
 }
 
 function createSBButton() {
   let button = document.createElement("button");
-  button.textContent = "São Bernardo";
+  button.textContent = "São Bernardo do Campo";
   button.addEventListener("click", function () {
-    showOnScreen(selectedSBList);
-  });
-  button.addEventListener("click", function () {
+    const selectedSBList = mainList.filter((item) => {
+      return item.Cidade === "São Bernardo do Campo";
+    });
     currentList = selectedSBList;
+    showOnScreen(selectedSBList);
   });
   return button;
 }
 
 function createSCButton() {
   let button = document.createElement("button");
-  button.textContent = "São Caetano";
+  button.textContent = "São Caetano do Sul";
   button.addEventListener("click", function () {
+    const selectedSCList = mainList.filter((item) => {
+      return item.Cidade === "São Caetano do Sul";
+    });
+    currentList = selectedSCList;
     showOnScreen(selectedSCList);
   });
-  button.addEventListener("click", function () {
-    currentList = selectedSCList;
-  });
   return button;
-}
-
-function dropdownClick() {
-  document.querySelector("#price-max").addEventListener("click", function () {
-  });
 }
 
 const selected = document.querySelector(".selected");
 const optionsContainer = document.querySelector(".options-container");
 const optionsList = document.querySelectorAll(".option");
 
-const downArrow = document.querySelector(".downArrow");
-const upArrow = document.querySelector(".upArrow");
+const downArrow = document.querySelector(".down-arrow");
+const upArrow = document.querySelector(".up-arrow");
 
 selected.addEventListener("click", () => {
   optionsContainer.classList.toggle("active");
-  downArrow.classList.toggle("hideArrow");
-  upArrow.classList.toggle("showArrow");
+  downArrow.classList.toggle("hide-arrow");
+  upArrow.classList.toggle("show-arrow");
 });
 
 optionsList.forEach((o) => {
   o.addEventListener("click", () => {
     selected.innerHTML = o.querySelector("label").innerHTML;
     optionsContainer.classList.remove("active");
-    downArrow.classList.remove("hideArrow");
-    upArrow.classList.remove("showArrow");
+    downArrow.classList.remove("hide-arrow");
+    upArrow.classList.remove("show-arrow");
   });
 });
 
-const searchBar = document.getElementById("searchBar");
+const searchBar = document.getElementById("search-bar");
 
-searchBar.addEventListener("keyup", (e) => {
-  const searchString = e.target.value;
+searchBar.addEventListener("keyup", (list) => {
+  const searchString = list.target.value;
   const filteredList = currentList.filter((building) => {
     return (
       building.Nome.toLowerCase().includes(searchString) ||
